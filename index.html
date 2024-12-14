@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>siro.csrf.kr</title>
+<style>
+  html, body {
+    margin:0; padding:0;
+    width:100%; height:100%;
+    background: linear-gradient(135deg, #4c4c4c, #1e1e1e);
+    font-family: sans-serif;
+    display:flex; justify-content:center; align-items:center;
+    overflow:hidden;
+  }
+
+  .container {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    background:rgba(255,255,255,0.1);
+    backdrop-filter:blur(8px);
+    border-radius:10px;
+    box-shadow:0 0 20px rgba(0,0,0,0.3);
+    padding:40px;
+    max-width:90%;
+    text-align:center;
+  }
+
+  /* 커스텀 엘리먼트에 대한 스타일 */
+  type-writer {
+    color:#fff;
+    font-size:1.2em;
+    white-space:nowrap;
+    overflow:hidden;
+    border-right:3px solid #fff;
+    display:inline-block;
+  }
+
+  .links {
+    margin-top:20px;
+    display:flex;
+    gap:10px;
+  }
+
+  .links a {
+    color:#fff;
+    text-decoration:none;
+    padding:8px 16px;
+    border:1px solid #fff;
+    border-radius:5px;
+    font-size:0.9em;
+    transition:background 0.3s;
+  }
+
+  .links a:hover {
+    background:rgba(255,255,255,0.2);
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <!-- 기본 요소보단 커스텀 엘리먼트 이용 -->
+  <type-writer text="Welcome! This is siro.csrf.kr's main page!" speed="80"></type-writer>
+  <div class="links">
+    <a href="https://csrf.kr" target="_blank">csrf.kr 메인 페이지</a>
+    <a href="https://sample.dev" target="_blank">sample.dev 페이지</a>
+  </div>
+</div>
+
+<script>
+  // 커스텀 웹 컴포넌트로 타이핑 효과 구현
+  class TypeWriter extends HTMLElement {
+    static get observedAttributes() { return ['text', 'speed']; }
+    constructor() {
+      super();
+      this._idx = 0;
+      this._text = this.getAttribute('text') || '';
+      this._speed = parseInt(this.getAttribute('speed'), 10) || 80;
+    }
+    connectedCallback() {
+      this._typeChar();
+    }
+    _typeChar() {
+      if (this._idx < this._text.length) {
+        this.textContent += this._text.charAt(this._idx);
+        this._idx++;
+        setTimeout(() => this._typeChar(), this._speed);
+      } else {
+        this.style.borderRight = 'none';
+      }
+    }
+  }
+  customElements.define('type-writer', TypeWriter);
+</script>
+</body>
+</html>
